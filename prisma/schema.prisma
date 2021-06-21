@@ -1,0 +1,44 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Model {
+  id           Int          @id @default(autoincrement())
+  name         String       @db.VarChar(255)
+  associations Association?
+  entities     Entity?
+}
+
+model Entity {
+  id         Int           @id @default(autoincrement())
+  name       String        @db.VarChar(255)
+  modelId    Int           @unique
+  model      Model         @relation(fields: [modelId], references: [id])
+  sourceA    Association[] @relation("source")
+  targetA    Association[] @relation("target")
+  attributes Attribute?
+}
+
+model Attribute {
+  id       Int    @id @default(autoincrement())
+  name     String @db.VarChar(255)
+  type     String @db.VarChar(255)
+  entityId Int    @unique
+  entity   Entity @relation(fields: [entityId], references: [id])
+}
+
+model Association {
+  id       Int    @id @default(autoincrement())
+  name     String @db.VarChar(255)
+  modelId  Int    @unique
+  sourceId Int
+  targetId Int
+  model    Model  @relation(fields: [modelId], references: [id])
+  source   Entity @relation("source", fields: [sourceId], references: [id])
+  terget   Entity @relation("target", fields: [targetId], references: [id])
+}
