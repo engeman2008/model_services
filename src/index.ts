@@ -2,6 +2,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import * as routes from './routes/index';
+import errorMiddleware from './middlewares/error.middleware';
 
 // initialize configuration
 dotenv.config();
@@ -12,8 +13,17 @@ const port = process.env.SERVER_PORT;
 
 const app = express();
 
+// create application/json parser
+app.use(express.urlencoded({
+  extended: true,
+}));
+app.use(express.json());
+
 // Configure routes
 routes.register(app);
+
+app.use(errorMiddleware);
+
 // app._router.stack.forEach((r: any) => {
 //   if (r.route && r.route.path) {
 //     console.log(r.route.path);

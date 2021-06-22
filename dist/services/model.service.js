@@ -19,6 +19,7 @@ class UserService {
     }
     createModel(modelData) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            console.log(modelData);
             // if (isEmpty(userData)) throw new HttpException(400, "You're not userData");
             const { name } = modelData;
             const createModelData = yield this.prisma.model.create({

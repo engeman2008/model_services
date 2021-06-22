@@ -7,7 +7,7 @@ const HttpException_1 = tslib_1.__importDefault(require("../exceptions/HttpExcep
 const validationMiddleware = (type) => (req, res, next) => {
     class_validator_1.validate(class_transformer_1.plainToClass(type, req.body)).then((errors) => {
         if (errors.length > 0) {
-            const message = errors.map((error) => Object.values(error)).join(', ');
+            const message = errors.map((error) => (error.constraints ? Object.values(error.constraints) : '')).join(', ');
             next(new HttpException_1.default(400, message));
         }
         else {

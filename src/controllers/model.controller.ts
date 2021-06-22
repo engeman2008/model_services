@@ -18,6 +18,7 @@ class ModelController {
 
   public createModel = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
+      console.log(req.body);
       const modelData: CreateModelDto = req.body;
       const createModelData: Model = await this.modelService.createModel(modelData);
 

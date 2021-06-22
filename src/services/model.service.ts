@@ -15,6 +15,7 @@ class UserService {
   }
 
   public async createModel(modelData: CreateModelDto): Promise<Model> {
+    console.log(modelData);
     // if (isEmpty(userData)) throw new HttpException(400, "You're not userData");
     const { name } = modelData;
 

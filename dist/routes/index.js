@@ -11,6 +11,7 @@ const register = (app) => {
     app.get('/model/:modelId(\\d+)', modelController.getModelById);
     // Creates a model by sending it's JSON and returns the id
     app.post('/create-model', validation_middleware_1.default(CreateModelDto_1.CreateModelDto), modelController.createModel);
+    // app.post('/create-model', modelController.createModel);
     // Accepts changes to the model via 'deltas')
     app.post('/model/:modelId(\\d+)/deltas', modelController.modelDeltas);
 };

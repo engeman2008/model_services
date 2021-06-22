@@ -16,6 +16,7 @@ class ModelController {
         });
         this.createModel = (req, res, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
+                console.log(req.body);
                 const modelData = req.body;
                 const createModelData = yield this.modelService.createModel(modelData);
                 res.status(201).json({ data: createModelData, message: 'created' });
