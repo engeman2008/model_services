@@ -2,6 +2,7 @@
 import { Model } from '@prisma/client'; // to be of mine
 import { NextFunction, Request, Response } from 'express';
 import { CreateModelDto } from '../dtos/CreateModelDto';
+import JsonPatchService from '../json.patch/jsonpatch.service';
 import ModelService from '../services/model.service';
 
 class ModelController {
@@ -9,8 +10,9 @@ class ModelController {
 
   public getModelById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const result: Model[] = await this.modelService.findAllModels();
-      res.status(200).json({ data: result, message: 'findAll' });
+      const modelId = Number(req.params.modelId);
+      const model: Model = await this.modelService.findModelById(modelId);
+      res.status(200).json({ data: model });
     } catch (error) {
       next(error);
     }
@@ -18,7 +20,6 @@ class ModelController {
 
   public createModel = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      console.log(req.body);
       const modelData: CreateModelDto = req.body;
       const createModelData: Model = await this.modelService.createModel(modelData);
 
@@ -29,7 +30,19 @@ class ModelController {
   }
 
   public modelDeltas = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    res.send('Well done3!');
+    try {
+      const modelId = Number(req.params.modelId);
+      const model: Model = await this.modelService.findModelById(modelId);
+
+      const jsonPatch = req.body;
+      console.log(jsonPatch[0].op);
+      const jsonPatchService = new JsonPatchService(model, jsonPatch);
+      jsonPatchService.apply();
+
+      res.status(200).json({ data: model });
+    } catch (error) {
+      next(error);
+    }
   }
 }
 export default ModelController;

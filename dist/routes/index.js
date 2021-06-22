@@ -5,6 +5,7 @@ const tslib_1 = require("tslib");
 const validation_middleware_1 = tslib_1.__importDefault(require("../middlewares/validation.middleware"));
 const model_controller_1 = tslib_1.__importDefault(require("../controllers/model.controller"));
 const CreateModelDto_1 = require("../dtos/CreateModelDto");
+const ModelDeltasDto_1 = require("../dtos/ModelDeltasDto");
 const register = (app) => {
     const modelController = new model_controller_1.default();
     // Get a model as JSON
@@ -13,6 +14,6 @@ const register = (app) => {
     app.post('/create-model', validation_middleware_1.default(CreateModelDto_1.CreateModelDto), modelController.createModel);
     // app.post('/create-model', modelController.createModel);
     // Accepts changes to the model via 'deltas')
-    app.post('/model/:modelId(\\d+)/deltas', modelController.modelDeltas);
+    app.post('/model/:modelId(\\d+)/deltas', validation_middleware_1.default(ModelDeltasDto_1.ModelDeltasDto), modelController.modelDeltas);
 };
 exports.register = register;

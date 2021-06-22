@@ -24,11 +24,6 @@ routes.register(app);
 
 app.use(errorMiddleware);
 
-// app._router.stack.forEach((r: any) => {
-//   if (r.route && r.route.path) {
-//     console.log(r.route.path);
-//   }
-// });
 app.listen(port, () => {
   console.log(`server started at http://localhost:${port}`);
 });

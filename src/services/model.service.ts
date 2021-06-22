@@ -1,5 +1,6 @@
 import { Model, PrismaClient } from '@prisma/client';
 import { CreateModelDto } from '../dtos/CreateModelDto';
+import HttpException from '../exceptions/HttpException';
 
 class UserService {
   private prisma = new PrismaClient()
@@ -14,8 +15,19 @@ class UserService {
     return allModels;
   }
 
+  public async findModelById(modelId: number): Promise<Model> {
+    const model = await this.prisma.model.findUnique({
+      where: { id: Number(modelId) },
+      include: {
+        entities: true,
+        associations: true,
+      },
+    });
+    if (!model) throw new HttpException(404, `Model with id ${modelId} not found`);
+    return model;
+  }
+
   public async createModel(modelData: CreateModelDto): Promise<Model> {
-    console.log(modelData);
     // if (isEmpty(userData)) throw new HttpException(400, "You're not userData");
     const { name } = modelData;
 

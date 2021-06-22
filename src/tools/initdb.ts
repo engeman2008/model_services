@@ -18,7 +18,6 @@ const init = async () => {
     const sql = await fs.readFile(filePath, { encoding: 'UTF-8' });
     // split the file into separate statements
     const statements = sql.split(/;\s*$/m);
-    console.log(statements);
     for (const statement of statements) {
       if (statement.length > 3) {
         // execute each of the statements
@@ -37,6 +36,5 @@ const init = async () => {
 init().then(() => {
   console.log('finished');
 }).catch((error) => {
-  console.log('finished with errors');
   console.log(error);
 });

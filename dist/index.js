@@ -20,11 +20,6 @@ app.use(express_1.default.json());
 // Configure routes
 routes.register(app);
 app.use(error_middleware_1.default);
-// app._router.stack.forEach((r: any) => {
-//   if (r.route && r.route.path) {
-//     console.log(r.route.path);
-//   }
-// });
 app.listen(port, () => {
     console.log(`server started at http://localhost:${port}`);
 });
