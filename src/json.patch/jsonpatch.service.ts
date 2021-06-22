@@ -28,7 +28,7 @@ class JsonPatchService {
 
     this.patchOperations.forEach(
       (operation: (AddOperation | ReplaceOperation | RemoveOperation | null)) => {
-        operation?.apply();
+        operation?.apply(this.model); // apply operation on the model and return the model
       },
     );
 
@@ -50,7 +50,6 @@ class JsonPatchService {
           return null;
       }
     });
-    console.log(this.patchOperations);
   }
 
   public setModel(model: Model) {

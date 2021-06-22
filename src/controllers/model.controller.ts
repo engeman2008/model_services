@@ -35,7 +35,6 @@ class ModelController {
       const model: Model = await this.modelService.findModelById(modelId);
 
       const jsonPatch = req.body;
-      console.log(jsonPatch[0].op);
       const jsonPatchService = new JsonPatchService(model, jsonPatch);
       jsonPatchService.apply();
 

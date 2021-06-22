@@ -17,7 +17,7 @@ export abstract class JsonOperation {
     this.path = path;
   }
 
-  abstract apply(): any;
+  abstract apply(input: any): any;
 
   getOp() : string {
     return this.op;

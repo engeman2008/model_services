@@ -6,7 +6,7 @@ export abstract class PathValueOperation extends JsonOperation {
 
   constructor(op: string, path: string, value: string) {
     super(op, path);
-    this.value = value;
+    this.value = deepCopy(value);
   }
 
   public getValue() {

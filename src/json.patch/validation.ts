@@ -1,4 +1,4 @@
-import * as pointer from 'json-pointer';
+import HttpException from '../exceptions/HttpException';
 import { OperationEnum } from './json.operation';
 import { OperationDto } from './operation.dto';
 
@@ -19,11 +19,7 @@ export class Validation {
         this.errorMessages.push(`Operation ${record.op} not supported`);
       }
     });
-    if (this.errorMessages.length !== 0) throw new Error(this.errorMessages.join(', '));
-  }
-
-  private validatePath() {
-    // pointer.get();
+    if (this.errorMessages.length !== 0) throw new HttpException(400, this.errorMessages.join(', '));
   }
 
   // eslint-disable-next-line class-methods-use-this
