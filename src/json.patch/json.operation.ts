@@ -1,9 +1,11 @@
 /* eslint-disable no-unused-vars */
-export const enum OperationEnum {
+export enum OperationEnum {
   add = 'add',
   remove = 'remove',
   replace = 'replace',
 }
+
+// export const OperationType = OperationEnum.add | OperationEnum.remove | OperationEnum.replace;
 
 export abstract class JsonOperation {
   protected op: string
@@ -15,7 +17,7 @@ export abstract class JsonOperation {
     this.path = path;
   }
 
-  abstract apply(value: string): any;
+  abstract apply(): any;
 
   getOp() : string {
     return this.op;

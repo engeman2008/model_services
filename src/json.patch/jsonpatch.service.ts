@@ -4,6 +4,7 @@ import { OperationEnum } from './json.operation';
 import { OperationDto } from './operation.dto';
 import { RemoveOperation } from './remove.operation';
 import { ReplaceOperation } from './replace.operation';
+import { Validation } from './validation';
 
 // eslint-disable-next-line no-unused-vars
 class JsonPatchService {
@@ -13,16 +14,30 @@ class JsonPatchService {
 
   private patchOperations: (AddOperation | ReplaceOperation | RemoveOperation | null)[] = [];
 
+  private valdiation = new Validation()
+
   constructor(model: Model, patch: OperationDto[]) {
     this.model = model;
     this.patch = patch;
   }
-  // private operations : []; // list of operation
 
   public apply() {
-    // validate the patch
-    // loop through each line and for each line apply the operation
-    console.log(this.patch);
+    this.valdiation.validate(this.patch);
+
+    this.mapOperations();
+
+    this.patchOperations.forEach(
+      (operation: (AddOperation | ReplaceOperation | RemoveOperation | null)) => {
+        operation?.apply();
+      },
+    );
+
+    // this.operations.apply;
+
+    return this.patch;
+  }
+
+  private mapOperations() {
     this.patchOperations = this.patch.map((record: OperationDto) => {
       switch (record.op) {
         case OperationEnum.add:
@@ -36,20 +51,8 @@ class JsonPatchService {
       }
     });
     console.log(this.patchOperations);
-
-    this.patchOperations.forEach((operation) => {
-      op;
-    });
-
-    // for each operation in this.operations
-    // this.operations.apply;
-
-    return this.patch;
   }
 
-  /**
-   * setModel
-   */
   public setModel(model: Model) {
     this.setModel(model);
   }
@@ -57,14 +60,6 @@ class JsonPatchService {
   public setPatch(patch: JSON) {
     this.setPatch(patch);
   }
-
-  // public validate() {
-
-  // }
-
-  // public applyOperation() {
-
-  // }
 }
 
 export default JsonPatchService;

@@ -4,8 +4,13 @@ declare class JsonPatchService {
     private model;
     private patch;
     private patchOperations;
+    private errorMessages;
     constructor(model: Model, patch: OperationDto[]);
     apply(): OperationDto[];
+    private validate;
+    private checkOpSupported;
+    private doesOperationSupported;
+    private mapOperations;
     /**
      * setModel
      */

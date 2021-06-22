@@ -7,7 +7,7 @@ export class AddOperation extends PathValueOperation {
     super('add', path, value);
   }
 
-  public apply(value: string): any {
-    return value;
+  public apply(): any {
+    return this.value;
   }
 }

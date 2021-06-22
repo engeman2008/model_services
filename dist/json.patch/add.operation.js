@@ -8,8 +8,8 @@ class AddOperation extends path_value_operation_1.PathValueOperation {
     constructor(path, value) {
         super('add', path, value);
     }
-    apply(value) {
-        return value;
+    apply() {
+        return this.value;
     }
 }
 exports.AddOperation = AddOperation;

@@ -7,7 +7,7 @@ export class RemoveOperation extends JsonOperation {
     super('remove', path);
   }
 
-  public apply(value: string): any {
-    return value;
+  public apply(): any {
+    return this.path;
   }
 }

@@ -8,8 +8,8 @@ class RemoveOperation extends json_operation_1.JsonOperation {
     constructor(path) {
         super('remove', path);
     }
-    apply(value) {
-        return value;
+    apply() {
+        return this.path;
     }
 }
 exports.RemoveOperation = RemoveOperation;

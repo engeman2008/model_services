@@ -1,3 +1,4 @@
+import { deepCopy } from '../utils/utils';
 import { JsonOperation } from './json.operation';
 
 export abstract class PathValueOperation extends JsonOperation {
@@ -9,6 +10,6 @@ export abstract class PathValueOperation extends JsonOperation {
   }
 
   public getValue() {
-    return this.value; // deep copy it
+    return deepCopy(this.value);
   }
 }
