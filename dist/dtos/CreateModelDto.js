@@ -10,7 +10,7 @@ class CreateModelDto {
 }
 tslib_1.__decorate([
     class_validator_1.IsString(),
-    class_validator_1.Min(5),
+    class_validator_1.MinLength(5),
     tslib_1.__metadata("design:type", String)
 ], CreateModelDto.prototype, "name", void 0);
 exports.CreateModelDto = CreateModelDto;

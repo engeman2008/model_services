@@ -1,7 +1,7 @@
-import { IsString, Min } from 'class-validator';
+import { IsString, MinLength } from 'class-validator';
 
 export class CreateModelDto {
   @IsString()
-  @Min(5)
+  @MinLength(5)
   public name: string = '';
 }
