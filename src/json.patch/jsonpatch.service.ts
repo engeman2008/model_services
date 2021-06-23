@@ -38,10 +38,8 @@ class JsonPatchService {
 
     this.patchOperations.forEach(
       async (operation: (AddOperation | ReplaceOperation | RemoveOperation | null)) => {
-        const result = operation?.apply(this.model);
-        console.log(result);
-        console.log(result.entities);
-
+        // eslint-disable-next-line no-unused-vars
+        this.model = operation?.apply(this.model);
         // await this.modelService.updateModel(this.model.id, result);
       },
     );
@@ -51,12 +49,11 @@ class JsonPatchService {
 
   private mapToOperations() {
     this.patchOperations = this.patch.map((record: OperationDto) => {
-      const mappedValueToModel = this.mapValueToModel(record.path, record.value);
       switch (record.op) {
         case OperationEnum.add:
-          return new AddOperation(record.path, mappedValueToModel);
+          return new AddOperation(record.path, record.value);
         case OperationEnum.replace:
-          return new ReplaceOperation(record.path, mappedValueToModel);
+          return new ReplaceOperation(record.path, record.value);
         case OperationEnum.remove:
           return new RemoveOperation(record.path);
         default:

@@ -10,8 +10,8 @@ datasource db {
 model Model {
   id           Int          @id @default(autoincrement())
   name         String       @db.VarChar(255)
-  associations Association?
-  entities     Entity?
+  associations Association[]
+  entities     Entity[]
 }
 
 model Entity {
@@ -19,9 +19,7 @@ model Entity {
   name       String        @db.VarChar(255)
   modelId    Int           
   model      Model         @relation(fields: [modelId], references: [id])
-  sourceA    Association[] @relation("source")
-  targetA    Association[] @relation("target")
-  attributes Attribute?
+  attributes Attribute[]
 }
 
 model Attribute {
@@ -39,6 +37,4 @@ model Association {
   sourceId Int
   targetId Int
   model    Model  @relation(fields: [modelId], references: [id])
-  source   Entity @relation("source", fields: [sourceId], references: [id])
-  target   Entity @relation("target", fields: [targetId], references: [id])
 }

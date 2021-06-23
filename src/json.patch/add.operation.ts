@@ -1,8 +1,5 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable class-methods-use-this */
 import * as pointer from 'json-pointer';
 import HttpException from '../exceptions/HttpException';
-import { removeNulls } from '../utils/utils';
 import { PathValueOperation } from './path.value.operation';
 
 export class AddOperation extends PathValueOperation {
@@ -13,8 +10,17 @@ export class AddOperation extends PathValueOperation {
   public apply(input: any): any {
     // if path not exists in the document
     if (!pointer.has(input, this.path)) throw new HttpException(404, `No such path ${this.path}`);
-    console.log(this.value);
-    pointer.set(input, this.path, this.value);
-    return removeNulls(input);
+
+    let document: any[] = pointer.get(input, this.path);
+    if (document == null) {
+      document = this.value;
+    } else if (Array.isArray(this.value)) {
+      this.value.forEach((record) => document.push(record));
+    } else {
+      document.push(this.value);
+    }
+    pointer.set(input, this.path, document);
+
+    return input;
   }
 }

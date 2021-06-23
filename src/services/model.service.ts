@@ -23,7 +23,12 @@ class ModelService {
     const model = await this.prisma.model.findUnique({
       where: { id: Number(modelId) },
       include: {
-        entities: true,
+        entities: {
+          include:
+          {
+            attributes: true,
+          },
+        },
         associations: true,
       },
     });
@@ -32,16 +37,12 @@ class ModelService {
   }
 
   public async createModel(modelData: CreateModelDto): Promise<Model> {
-    // if (isEmpty(userData)) throw new HttpException(400, "You're not userData");
-
-    console.log(modelData.entities);
     const createModelData: Model = await this.prisma.model.create({
       data: {
         name: modelData.name,
       },
     });
     modelData.entities.forEach(async (record) => {
-      console.log(record.name);
       const entity: Entity = await this.prisma.entity.create({
         data: {
           name: record.name,
@@ -49,8 +50,6 @@ class ModelService {
         },
       });
       record.attributes.forEach(async (row) => {
-        console.log(row.name);
-
         await this.prisma.attribute.create({
           data: {
             name: row.name,
@@ -61,28 +60,21 @@ class ModelService {
       });
     });
     modelData.associations.forEach(async (record) => {
-      console.log(record.name);
+      const sourceEntity = await this.prisma.entity.findFirst({
+        where: { name: record.source, modelId: createModelData.id },
+      });
+      const targetEntity = await this.prisma.entity.findFirst({
+        where: { name: record.target, modelId: createModelData.id },
+      });
 
-      const sourceEntity: Entity | null = await this.prisma.entity.findFirst({
-        where: { name: record.source },
-        orderBy: {
-          id: 'asc',
+      await this.prisma.association.create({
+        data: {
+          name: record.name,
+          modelId: createModelData.id,
+          sourceId: sourceEntity?.id ?? 0,
+          targetId: targetEntity?.id ?? 0,
         },
       });
-      const targetEntity: Entity | null = await this.prisma.entity.findFirst({
-        where: { name: record.target },
-      });
-
-      if (sourceEntity && targetEntity) {
-        const ass: Association = await this.prisma.association.create({
-          data: {
-            name: record.name,
-            modelId: createModelData.id,
-            sourceId: sourceEntity.id,
-            targetId: targetEntity.id,
-          },
-        });
-      }
     });
     return createModelData;
   }

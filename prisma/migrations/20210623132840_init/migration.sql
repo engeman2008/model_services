@@ -36,15 +36,6 @@ CREATE TABLE "Association" (
     PRIMARY KEY ("id")
 );
 
--- CreateIndex
--- CREATE UNIQUE INDEX "Entity_modelId_unique" ON "Entity"("modelId");
-
--- -- CreateIndex
--- CREATE UNIQUE INDEX "Attribute_entityId_unique" ON "Attribute"("entityId");
-
--- -- CreateIndex
--- CREATE UNIQUE INDEX "Association_modelId_unique" ON "Association"("modelId");
-
 -- AddForeignKey
 ALTER TABLE "Entity" ADD FOREIGN KEY ("modelId") REFERENCES "Model"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -53,9 +44,3 @@ ALTER TABLE "Attribute" ADD FOREIGN KEY ("entityId") REFERENCES "Entity"("id") O
 
 -- AddForeignKey
 ALTER TABLE "Association" ADD FOREIGN KEY ("modelId") REFERENCES "Model"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Association" ADD FOREIGN KEY ("sourceId") REFERENCES "Entity"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Association" ADD FOREIGN KEY ("targetId") REFERENCES "Entity"("id") ON DELETE CASCADE ON UPDATE CASCADE;
