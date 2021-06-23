@@ -1,12 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import { Model as PrisamModel } from '@prisma/client';
-import { plainToClass } from 'class-transformer';
-import { Association } from '../models/association';
-import { Attribute } from '../models/attributes';
-import { Entity } from '../models/entity';
-import { Model } from '../models/model';
 import ModelService from '../services/model.service';
-import { isEmpty } from '../utils/utils';
 import { AddOperation } from './add.operation';
 import { OperationEnum } from './json.operation';
 import { OperationDto } from './operation.dto';
@@ -16,7 +9,7 @@ import { Validation } from './validation';
 
 // eslint-disable-next-line no-unused-vars
 class JsonPatchService {
-  private model: PrisamModel;
+  private model: any;
 
   private patch: OperationDto[]
 
@@ -26,7 +19,7 @@ class JsonPatchService {
 
   private modelService = new ModelService()
 
-  constructor(model: PrisamModel, patch: OperationDto[]) {
+  constructor(model: any, patch: OperationDto[]) {
     this.model = model;
     this.patch = patch;
   }
@@ -38,8 +31,9 @@ class JsonPatchService {
 
     this.patchOperations.forEach(
       async (operation: (AddOperation | ReplaceOperation | RemoveOperation | null)) => {
-        // eslint-disable-next-line no-unused-vars
         this.model = operation?.apply(this.model);
+        console.log(this.model);
+
         // await this.modelService.updateModel(this.model.id, result);
       },
     );
@@ -62,29 +56,12 @@ class JsonPatchService {
     });
   }
 
-  public setModel(model: PrisamModel) {
+  public setModel(model: any) {
     this.setModel(model);
   }
 
   public setPatch(patch: JSON) {
     this.setPatch(patch);
-  }
-
-  public mapValueToModel(path: string, value: any) {
-    if (isEmpty(value)) return null;
-    let mappedValueToModel;
-
-    if (isEmpty(path)) {
-      mappedValueToModel = plainToClass(Model, value);
-    } else if (path.match('/entities')) {
-      mappedValueToModel = (plainToClass(Entity, value));
-    } else if (path.match('/associations')) {
-      mappedValueToModel = plainToClass(Association, value);
-    } else {
-      mappedValueToModel = plainToClass(Attribute, value);
-    }
-
-    return mappedValueToModel;
   }
 }
 

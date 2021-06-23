@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { Model } from '@prisma/client'; // to be of mine
 import { NextFunction, Request, Response } from 'express';
-import { CreateModelDto } from '../dtos/CreateModelDto';
 import JsonPatchService from '../json.patch/jsonpatch.service';
+import { MyModelDoc } from '../mongoose/model';
 import ModelService from '../services/model.service';
 
 class ModelController {
@@ -10,8 +9,8 @@ class ModelController {
 
   public getModelById = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const modelId = Number(req.params.modelId);
-      const model: Model = await this.modelService.findModelById(modelId);
+      const { modelId } = req.params;
+      const model: any = await this.modelService.findModelById(modelId);
       res.status(200).json({ data: model });
     } catch (error) {
       next(error);
@@ -20,10 +19,9 @@ class ModelController {
 
   public createModel = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const modelData: CreateModelDto = req.body;
-      const createModelData: Model = await this.modelService.createModel(modelData);
-
-      res.status(201).json({ data: createModelData, message: 'created' });
+      const modelData = req.body;
+      const result: MyModelDoc = await this.modelService.createModel(modelData);
+      res.status(201).json({ data: result, message: 'created' });
     } catch (error) {
       next(error);
     }
@@ -31,8 +29,8 @@ class ModelController {
 
   public modelDeltas = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const modelId = Number(req.params.modelId);
-      const model: Model = await this.modelService.findModelById(modelId);
+      const { modelId } = req.params;
+      const model: any = await this.modelService.findModelById(modelId);
 
       const jsonPatch = req.body;
       const jsonPatchService = new JsonPatchService(model, jsonPatch);
