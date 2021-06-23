@@ -34,7 +34,9 @@ class ModelController {
 
       const jsonPatch = req.body;
       const jsonPatchService = new JsonPatchService(model, jsonPatch);
-      jsonPatchService.apply();
+      const result = jsonPatchService.apply();
+
+      this.modelService.updateModel(modelId, result);
 
       res.status(200).json({ data: model });
     } catch (error) {

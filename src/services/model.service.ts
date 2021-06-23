@@ -23,5 +23,13 @@ class ModelService {
       throw new HttpException(422, 'Failed to add');
     }
   }
+
+  public async updateModel(modelId: string, modelData: any) {
+    try {
+      MyModel.findByIdAndUpdate(modelId, modelData, { new: true, upsert: true });
+    } catch (error) {
+      throw new HttpException(422, 'Failed to update');
+    }
+  }
 }
 export default ModelService;

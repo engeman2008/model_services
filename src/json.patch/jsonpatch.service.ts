@@ -33,8 +33,6 @@ class JsonPatchService {
       async (operation: (AddOperation | ReplaceOperation | RemoveOperation | null)) => {
         this.model = operation?.apply(this.model);
         console.log(this.model);
-
-        // await this.modelService.updateModel(this.model.id, result);
       },
     );
 
