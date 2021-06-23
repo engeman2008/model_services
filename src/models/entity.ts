@@ -1,7 +1,12 @@
-import { Attribute } from '../interfaces/attribute.interface';
+import { Attribute } from './attributes';
 
-export interface Entity {
-  id: number;
+export class Entity {
   name: string;
+
   attributes: Attribute[]
+
+  constructor(name: string, attributes: Attribute[]) {
+    this.name = name;
+    this.attributes = attributes;
+  }
 }

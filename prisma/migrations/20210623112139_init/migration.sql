@@ -37,13 +37,13 @@ CREATE TABLE "Association" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Entity.modelId_unique" ON "Entity"("modelId");
+-- CREATE UNIQUE INDEX "Entity_modelId_unique" ON "Entity"("modelId");
 
--- CreateIndex
-CREATE UNIQUE INDEX "Attribute.entityId_unique" ON "Attribute"("entityId");
+-- -- CreateIndex
+-- CREATE UNIQUE INDEX "Attribute_entityId_unique" ON "Attribute"("entityId");
 
--- CreateIndex
-CREATE UNIQUE INDEX "Association.modelId_unique" ON "Association"("modelId");
+-- -- CreateIndex
+-- CREATE UNIQUE INDEX "Association_modelId_unique" ON "Association"("modelId");
 
 -- AddForeignKey
 ALTER TABLE "Entity" ADD FOREIGN KEY ("modelId") REFERENCES "Model"("id") ON DELETE CASCADE ON UPDATE CASCADE;

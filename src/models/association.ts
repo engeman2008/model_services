@@ -1,8 +1,15 @@
-import { Entity } from '../interfaces/entity.interface';
+import { Entity } from './entity';
 
-export interface Association {
-  id: number;
+export class Association {
   name: string;
-  source: Entity
-  target: Entity
+
+  source: string
+
+  target: string
+
+  constructor(name: string, source: string, target: string) {
+    this.name = name;
+    this.source = source;
+    this.target = target;
+  }
 }

@@ -31,7 +31,6 @@ class ModelController {
                 const modelId = Number(req.params.modelId);
                 const model = yield this.modelService.findModelById(modelId);
                 const jsonPatch = req.body;
-                console.log(jsonPatch[0].op);
                 const jsonPatchService = new jsonpatch_service_1.default(model, jsonPatch);
                 jsonPatchService.apply();
                 res.status(200).json({ data: model });

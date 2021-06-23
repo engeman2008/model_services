@@ -1,9 +1,16 @@
-import { Association } from '../interfaces/association.interface';
-import { Entity } from '../interfaces/entity.interface';
+import { Association } from './association';
+import { Entity } from './entity';
 
-export interface Model {
-  id: number
+export class Model {
   name: string
-  entities: Entity[],
+
+  entities: Entity[]
+
   associations: Association[]
+
+  constructor(name: string, entities: Entity[], associations: Association[]) {
+    this.name = name;
+    this.entities = entities;
+    this.associations = associations;
+  }
 }

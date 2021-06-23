@@ -1,4 +1,12 @@
-import { Model } from '@prisma/client';
+/* eslint-disable class-methods-use-this */
+import { Model as PrisamModel } from '@prisma/client';
+import { plainToClass } from 'class-transformer';
+import { Association } from '../models/association';
+import { Attribute } from '../models/attributes';
+import { Entity } from '../models/entity';
+import { Model } from '../models/model';
+import ModelService from '../services/model.service';
+import { isEmpty } from '../utils/utils';
 import { AddOperation } from './add.operation';
 import { OperationEnum } from './json.operation';
 import { OperationDto } from './operation.dto';
@@ -8,7 +16,7 @@ import { Validation } from './validation';
 
 // eslint-disable-next-line no-unused-vars
 class JsonPatchService {
-  private model: Model;
+  private model: PrisamModel;
 
   private patch: OperationDto[]
 
@@ -16,7 +24,9 @@ class JsonPatchService {
 
   private valdiation = new Validation()
 
-  constructor(model: Model, patch: OperationDto[]) {
+  private modelService = new ModelService()
+
+  constructor(model: PrisamModel, patch: OperationDto[]) {
     this.model = model;
     this.patch = patch;
   }
@@ -24,26 +34,29 @@ class JsonPatchService {
   public apply() {
     this.valdiation.validate(this.patch);
 
-    this.mapOperations();
+    this.mapToOperations();
 
     this.patchOperations.forEach(
-      (operation: (AddOperation | ReplaceOperation | RemoveOperation | null)) => {
-        operation?.apply(this.model); // apply operation on the model and return the model
+      async (operation: (AddOperation | ReplaceOperation | RemoveOperation | null)) => {
+        const result = operation?.apply(this.model);
+        console.log(result);
+        console.log(result.entities);
+
+        // await this.modelService.updateModel(this.model.id, result);
       },
     );
-
-    // this.operations.apply;
 
     return this.patch;
   }
 
-  private mapOperations() {
+  private mapToOperations() {
     this.patchOperations = this.patch.map((record: OperationDto) => {
+      const mappedValueToModel = this.mapValueToModel(record.path, record.value);
       switch (record.op) {
         case OperationEnum.add:
-          return new AddOperation(record.path, record.value ?? '');
+          return new AddOperation(record.path, mappedValueToModel);
         case OperationEnum.replace:
-          return new ReplaceOperation(record.path, record.value ?? '');
+          return new ReplaceOperation(record.path, mappedValueToModel);
         case OperationEnum.remove:
           return new RemoveOperation(record.path);
         default:
@@ -52,12 +65,29 @@ class JsonPatchService {
     });
   }
 
-  public setModel(model: Model) {
+  public setModel(model: PrisamModel) {
     this.setModel(model);
   }
 
   public setPatch(patch: JSON) {
     this.setPatch(patch);
+  }
+
+  public mapValueToModel(path: string, value: any) {
+    if (isEmpty(value)) return null;
+    let mappedValueToModel;
+
+    if (isEmpty(path)) {
+      mappedValueToModel = plainToClass(Model, value);
+    } else if (path.match('/entities')) {
+      mappedValueToModel = (plainToClass(Entity, value));
+    } else if (path.match('/associations')) {
+      mappedValueToModel = plainToClass(Association, value);
+    } else {
+      mappedValueToModel = plainToClass(Attribute, value);
+    }
+
+    return mappedValueToModel;
   }
 }
 

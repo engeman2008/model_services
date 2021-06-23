@@ -2,7 +2,7 @@
 import { PathValueOperation } from './path.value.operation';
 
 export class ReplaceOperation extends PathValueOperation {
-  constructor(path: string, value: string) {
+  constructor(path: string, value: any) {
     super('replace', path, value);
   }
 

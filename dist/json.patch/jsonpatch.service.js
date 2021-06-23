@@ -4,44 +4,23 @@ const add_operation_1 = require("./add.operation");
 const json_operation_1 = require("./json.operation");
 const remove_operation_1 = require("./remove.operation");
 const replace_operation_1 = require("./replace.operation");
+const validation_1 = require("./validation");
 // eslint-disable-next-line no-unused-vars
 class JsonPatchService {
     constructor(model, patch) {
         this.patchOperations = [];
-        this.errorMessages = [];
+        this.valdiation = new validation_1.Validation();
         this.model = model;
         this.patch = patch;
     }
-    // private operations : []; // list of operation
     apply() {
-        this.validate();
-        // validate path
+        this.valdiation.validate(this.patch);
         this.mapOperations();
         this.patchOperations.forEach((operation) => {
-            operation === null || operation === void 0 ? void 0 : operation.apply();
+            operation === null || operation === void 0 ? void 0 : operation.apply(this.model); // apply operation on the model and return the model
         });
-        // for each operation in this.operations
         // this.operations.apply;
         return this.patch;
-    }
-    validate() {
-        this.checkOpSupported();
-    }
-    checkOpSupported() {
-        this.patch.forEach((record) => {
-            const isOpSupported = this.doesOperationSupported(record);
-            if (!isOpSupported) {
-                this.errorMessages.push(`Operation ${record.op} not supported`);
-            }
-        });
-        if (this.errorMessages.length !== 0)
-            throw new Error(this.errorMessages.join(', '));
-    }
-    // eslint-disable-next-line class-methods-use-this
-    doesOperationSupported(record) {
-        if (record.op in json_operation_1.OperationEnum)
-            return true;
-        return false;
     }
     mapOperations() {
         this.patchOperations = this.patch.map((record) => {
@@ -57,11 +36,7 @@ class JsonPatchService {
                     return null;
             }
         });
-        console.log(this.patchOperations);
     }
-    /**
-     * setModel
-     */
     setModel(model) {
         this.setModel(model);
     }

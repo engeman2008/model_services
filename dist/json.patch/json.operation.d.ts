@@ -7,7 +7,7 @@ export declare abstract class JsonOperation {
     protected op: string;
     protected path: string;
     constructor(op: string, path: string);
-    abstract apply(): any;
+    abstract apply(input: any): any;
     getOp(): string;
     getPath(): string;
 }

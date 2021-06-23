@@ -1,3 +1,7 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-restricted-syntax */
+/* eslint-disable guard-for-in */
+/* eslint-disable no-unused-vars */
 export const deepCopy = <T>(target: T): T => {
   if (target === null) {
     return target;
@@ -21,3 +25,16 @@ export const deepCopy = <T>(target: T): T => {
   }
   return target;
 };
+export const isEmpty = (val: any) => val == null || !(Object.keys(val) || val).length;
+
+export function removeNulls(obj: any): any {
+  if (obj === null) {
+    return undefined;
+  }
+  if (typeof obj === 'object') {
+    for (const key in obj) {
+      obj[key] = removeNulls(obj[key]);
+    }
+  }
+  return obj;
+}
