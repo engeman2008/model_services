@@ -31,10 +31,11 @@ class ModelController {
     try {
       const { modelId } = req.params;
       const model: any = await this.modelService.findModelById(modelId);
-
+      console.log(model);
       const jsonPatch = req.body;
       const jsonPatchService = new JsonPatchService(model, jsonPatch);
       const result = jsonPatchService.apply();
+      // console.log(result);
 
       this.modelService.updateModel(modelId, result);
 

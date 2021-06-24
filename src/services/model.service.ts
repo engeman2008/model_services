@@ -6,12 +6,12 @@ import { MyModel } from '../mongoose/schema';
 
 class ModelService {
   public async findModelById(modelId: string): Promise<any> {
-    try {
-      const myModel = await MyModel.findById(modelId);
-      return myModel;
-    } catch (error) {
-      throw new HttpException(404, `Model with id ${modelId} not found`);
-    }
+    const myModel = await MyModel.findById(modelId, (err: any, data: any) => {
+      if (err) { throw new HttpException(404, err); }
+    });
+    if (!myModel) { throw new HttpException(404, `Model with id ${modelId} not found`); }
+
+    return myModel;
   }
 
   public async createModel(modelData: any): Promise<MyModelDoc> {
@@ -21,7 +21,6 @@ class ModelService {
         if (err) {
           throw new HttpException(404, err);
         }
-        return data;
       });
       return myModel;
     } catch (error) {
