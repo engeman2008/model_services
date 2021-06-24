@@ -8,7 +8,7 @@ class ModelController {
         this.modelService = new model_service_1.default();
         this.getModelById = (req, res, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                const modelId = Number(req.params.modelId);
+                const { modelId } = req.params;
                 const model = yield this.modelService.findModelById(modelId);
                 res.status(200).json({ data: model });
             }
@@ -19,8 +19,9 @@ class ModelController {
         this.createModel = (req, res, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 const modelData = req.body;
-                const createModelData = yield this.modelService.createModel(modelData);
-                res.status(201).json({ data: createModelData, message: 'created' });
+                console.log(modelData);
+                const result = yield this.modelService.createModel(modelData);
+                res.status(201).json({ data: result, message: 'created' });
             }
             catch (error) {
                 next(error);
@@ -28,11 +29,14 @@ class ModelController {
         });
         this.modelDeltas = (req, res, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
-                const modelId = Number(req.params.modelId);
+                const { modelId } = req.params;
                 const model = yield this.modelService.findModelById(modelId);
+                console.log(model);
                 const jsonPatch = req.body;
                 const jsonPatchService = new jsonpatch_service_1.default(model, jsonPatch);
-                jsonPatchService.apply();
+                const result = jsonPatchService.apply();
+                // console.log(result);
+                this.modelService.updateModel(modelId, result);
                 res.status(200).json({ data: model });
             }
             catch (error) {

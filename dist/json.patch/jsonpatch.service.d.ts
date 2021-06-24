@@ -1,14 +1,15 @@
-import { Model } from '@prisma/client';
+import { IModel } from '../mongoose/model';
 import { OperationDto } from './operation.dto';
 declare class JsonPatchService {
     private model;
     private patch;
     private patchOperations;
     private valdiation;
-    constructor(model: Model, patch: OperationDto[]);
-    apply(): OperationDto[];
-    private mapOperations;
-    setModel(model: Model): void;
+    private modelService;
+    constructor(model: any, patch: OperationDto[]);
+    apply(): IModel;
+    private mapToOperations;
+    setModel(model: any): void;
     setPatch(patch: JSON): void;
 }
 export default JsonPatchService;

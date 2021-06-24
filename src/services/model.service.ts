@@ -1,29 +1,34 @@
 /* eslint-disable class-methods-use-this */
 import HttpException from '../exceptions/HttpException';
-import { MyModelDoc } from '../mongoose/model';
+import { ICreateModelInput } from '../interfaces/model-input.interface';
+import { IModel } from '../mongoose/model';
 
 import { MyModel } from '../mongoose/schema';
 
 class ModelService {
   public async findModelById(modelId: string): Promise<any> {
-    const myModel = await MyModel.findById(modelId, (err: any, data: any) => {
-      if (err) { throw new HttpException(404, err); }
-    });
-    if (!myModel) { throw new HttpException(404, `Model with id ${modelId} not found`); }
-
-    return myModel;
-  }
-
-  public async createModel(modelData: any): Promise<MyModelDoc> {
     try {
-      const myModel = new MyModel(modelData);
-      await myModel.save((err: any, data: any) => {
-        if (err) {
-          throw new HttpException(404, err);
-        }
-      });
+      const myModel = await MyModel.findById(modelId);
       return myModel;
     } catch (error) {
+      throw new HttpException(404, `Model with id ${modelId} not found`);
+    }
+  }
+
+  public async createModel(modelData: ICreateModelInput): Promise<IModel> {
+    try {
+      const myModel = new MyModel(modelData);
+      await myModel.validate();
+      await myModel.save();
+      return myModel;
+    } catch (error) {
+      if (error.name === 'ValidationError') {
+        const errors: any = {};
+        Object.keys(error.errors).forEach((key) => {
+          errors[key] = error.errors[key].message;
+        });
+        throw new HttpException(400, errors);
+      }
       throw new HttpException(422, 'Failed to create');
     }
   }
@@ -43,13 +48,6 @@ class ModelService {
     } catch (error) {
       throw new HttpException(422, 'Failed to update');
     }
-  }
-
-  private async doesModelExists(modelId: string) {
-    await MyModel.findById(modelId, (err: any, data: any) => {
-      if (err) return false;
-      return data;
-    });
   }
 }
 export default ModelService;

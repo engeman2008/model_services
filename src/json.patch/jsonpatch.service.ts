@@ -1,4 +1,5 @@
 /* eslint-disable class-methods-use-this */
+import { IModel } from '../mongoose/model';
 import ModelService from '../services/model.service';
 import { AddOperation } from './add.operation';
 import { OperationEnum } from './json.operation';
@@ -24,7 +25,7 @@ class JsonPatchService {
     this.patch = patch;
   }
 
-  public apply() {
+  public apply() : IModel {
     this.valdiation.validate(this.patch);
 
     this.mapToOperations();

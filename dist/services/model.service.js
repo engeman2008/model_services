@@ -1,48 +1,59 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-const client_1 = require("@prisma/client");
+/* eslint-disable class-methods-use-this */
 const HttpException_1 = tslib_1.__importDefault(require("../exceptions/HttpException"));
-class UserService {
-    constructor() {
-        this.prisma = new client_1.PrismaClient();
-    }
-    findAllModels() {
-        return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const allModels = yield this.prisma.model.findMany({
-                include: {
-                    entities: true,
-                    associations: true,
-                },
-            });
-            return allModels;
-        });
-    }
+const schema_1 = require("../mongoose/schema");
+class ModelService {
     findModelById(modelId) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            const model = yield this.prisma.model.findUnique({
-                where: { id: Number(modelId) },
-                include: {
-                    entities: true,
-                    associations: true,
-                },
-            });
-            if (!model)
+            try {
+                const myModel = yield schema_1.MyModel.findById(modelId);
+                return myModel;
+            }
+            catch (error) {
                 throw new HttpException_1.default(404, `Model with id ${modelId} not found`);
-            return model;
+            }
         });
     }
     createModel(modelData) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            // if (isEmpty(userData)) throw new HttpException(400, "You're not userData");
-            const { name } = modelData;
-            const createModelData = yield this.prisma.model.create({
-                data: {
-                    name,
-                },
-            });
-            return createModelData;
+            try {
+                const myModel = new schema_1.MyModel(modelData);
+                yield myModel.validate();
+                yield myModel.save();
+                return myModel;
+            }
+            catch (error) {
+                if (error.name === 'ValidationError') {
+                    const errors = {};
+                    Object.keys(error.errors).forEach((key) => {
+                        errors[key] = error.errors[key].message;
+                    });
+                    throw new HttpException_1.default(400, errors);
+                }
+                console.log(error);
+                throw new HttpException_1.default(422, 'Failed to create');
+            }
+        });
+    }
+    updateModel(modelId, modelData) {
+        return tslib_1.__awaiter(this, void 0, void 0, function* () {
+            yield this.findModelById(modelId);
+            try {
+                const myModel = new schema_1.MyModel(modelData);
+                yield myModel.save((err, data) => {
+                    if (err) {
+                        throw new HttpException_1.default(404, err);
+                    }
+                    return data;
+                });
+                return myModel;
+            }
+            catch (error) {
+                throw new HttpException_1.default(422, 'Failed to update');
+            }
         });
     }
 }
-exports.default = UserService;
+exports.default = ModelService;
