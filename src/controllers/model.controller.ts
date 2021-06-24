@@ -1,8 +1,4 @@
-/* eslint-disable max-classes-per-file */
-/* eslint-disable no-unused-vars */
-import { plainToClass } from 'class-transformer';
 import { NextFunction, Request, Response } from 'express';
-import { ICreateModelInput } from '../interfaces/model-input.interface';
 import JsonPatchService from '../json.patch/jsonpatch.service';
 import { IModel } from '../mongoose/model';
 import ModelService from '../services/model.service';
@@ -22,7 +18,7 @@ class ModelController {
 
   public createModel = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const modelData = <ICreateModelInput>req.body;
+      const modelData = req.body;
       const result: IModel = await this.modelService.createModel(modelData);
       res.status(201).json({ data: result, message: 'created' });
     } catch (error) {

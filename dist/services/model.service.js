@@ -32,7 +32,6 @@ class ModelService {
                     });
                     throw new HttpException_1.default(400, errors);
                 }
-                console.log(error);
                 throw new HttpException_1.default(422, 'Failed to create');
             }
         });

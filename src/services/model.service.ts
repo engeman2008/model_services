@@ -1,6 +1,5 @@
 /* eslint-disable class-methods-use-this */
 import HttpException from '../exceptions/HttpException';
-import { ICreateModelInput } from '../interfaces/model-input.interface';
 import { IModel } from '../mongoose/model';
 
 import { MyModel } from '../mongoose/schema';
@@ -15,7 +14,7 @@ class ModelService {
     }
   }
 
-  public async createModel(modelData: ICreateModelInput): Promise<IModel> {
+  public async createModel(modelData: any): Promise<IModel> {
     try {
       const myModel = new MyModel(modelData);
       await myModel.validate();

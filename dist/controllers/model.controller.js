@@ -19,7 +19,6 @@ class ModelController {
         this.createModel = (req, res, next) => tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 const modelData = req.body;
-                console.log(modelData);
                 const result = yield this.modelService.createModel(modelData);
                 res.status(201).json({ data: result, message: 'created' });
             }
@@ -31,11 +30,9 @@ class ModelController {
             try {
                 const { modelId } = req.params;
                 const model = yield this.modelService.findModelById(modelId);
-                console.log(model);
                 const jsonPatch = req.body;
                 const jsonPatchService = new jsonpatch_service_1.default(model, jsonPatch);
                 const result = jsonPatchService.apply();
-                // console.log(result);
                 this.modelService.updateModel(modelId, result);
                 res.status(200).json({ data: model });
             }

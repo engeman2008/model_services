@@ -37,6 +37,4 @@ const myModelSchema = new mongoose_1.default.Schema({
 // const MyModel = mongoose.model<MyModelDoc, myModelInterface>('MyModel', myModelSchema);
 const MyModel = mongoose_1.default.model('MyModel', myModelSchema);
 exports.MyModel = MyModel;
-// MyModel.watch()
-//   .on('change', (data) => console.log(new Date(), data));
 myModelSchema.plugin(AutoIncrement, { inc_field: 'id' });
