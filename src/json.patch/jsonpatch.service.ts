@@ -14,7 +14,11 @@ class JsonPatchService {
 
   private patch: OperationDto[]
 
-  private patchOperations: (AddOperation | ReplaceOperation | RemoveOperation | null)[] = [];
+  private addOperations: AddOperation[] = [];
+
+  private removeOperations: RemoveOperation[] = [];
+
+  private replaceOperations: ReplaceOperation[] = [];
 
   private valdiation = new Validation()
 
@@ -25,13 +29,24 @@ class JsonPatchService {
     this.patch = patch;
   }
 
-  public apply() : IModel {
+  public apply(): IModel {
     this.valdiation.validate(this.patch);
 
     this.mapToOperations();
 
-    this.patchOperations.forEach(
-      async (operation: (AddOperation | ReplaceOperation | RemoveOperation | null)) => {
+    // apply replace then remove then add
+    this.replaceOperations.forEach(
+      async (operation: ReplaceOperation) => {
+        this.model = operation?.apply(this.model);
+      },
+    );
+    this.removeOperations.forEach(
+      async (operation: RemoveOperation) => {
+        this.model = operation?.apply(this.model);
+      },
+    );
+    this.addOperations.forEach(
+      async (operation: AddOperation) => {
         this.model = operation?.apply(this.model);
       },
     );
@@ -40,16 +55,19 @@ class JsonPatchService {
   }
 
   private mapToOperations() {
-    this.patchOperations = this.patch.map((record: OperationDto) => {
+    this.patch.forEach((record: OperationDto) => {
       switch (record.op) {
         case OperationEnum.add:
-          return new AddOperation(record.path, record.value);
+          this.addOperations.push(new AddOperation(record.path, record.value));
+          break;
         case OperationEnum.replace:
-          return new ReplaceOperation(record.path, record.value);
+          this.replaceOperations.push(new ReplaceOperation(record.path, record.value));
+          break;
         case OperationEnum.remove:
-          return new RemoveOperation(record.path);
+          this.removeOperations.push(new RemoveOperation(record.path));
+          break;
         default:
-          return null;
+          break;
       }
     });
   }

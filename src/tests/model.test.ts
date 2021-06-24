@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import supertest from 'supertest';
 
 import { MyModel } from '../mongoose/schema';
-import { newModelData } from './new-model.json';
+import { newModelData, deltas } from './test-data';
 
 import app from '../app';
 
@@ -58,5 +58,19 @@ describe('[GET] /model/:modelId', () => {
       .get('/model/24245')
       .set('Accept', 'application/json')
       .expect(404, { message: 'Model with id 24245 not found' });
+  });
+});
+
+describe('[POST] /model/:modelId/deltas', () => {
+  it('response statusCode 200 if ok', async () => {
+    const model = new MyModel(newModelData);
+    await model.save();
+    console.log(model._id);
+    const res = await request
+      .post(`/model/${model._id}/deltas`)
+      .set('Accept', 'application/json')
+      .send(deltas);
+
+    expect(res.status).toBe(200);
   });
 });

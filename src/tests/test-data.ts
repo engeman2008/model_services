@@ -54,3 +54,8 @@ export const newModelData = {
     },
   ],
 };
+
+export const deltas = [
+  { op: 'remove', path: '/entities/1' },
+  { op: 'replace', path: '/entities/2/attributes/0/name', value: 'replaced name' },
+];
