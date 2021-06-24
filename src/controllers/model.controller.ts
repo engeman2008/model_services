@@ -20,7 +20,7 @@ class ModelController {
   public createModel = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const modelData = req.body;
-      const result: MyModelDoc = await this.modelService.createModel(modelData);
+      const result: MyModelDoc = await this.modelService.saveModel(modelData);
       res.status(201).json({ data: result, message: 'created' });
     } catch (error) {
       next(error);
@@ -36,7 +36,7 @@ class ModelController {
       const jsonPatchService = new JsonPatchService(model, jsonPatch);
       const result = jsonPatchService.apply();
 
-      this.modelService.updateModel(modelId, result);
+      this.modelService.saveModel(result);
 
       res.status(200).json({ data: model });
     } catch (error) {

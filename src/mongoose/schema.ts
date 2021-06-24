@@ -38,7 +38,11 @@ const myModelSchema = new mongoose.Schema({
 });
 
 // const MyModel = mongoose.model<MyModelDoc, myModelInterface>('MyModel', myModelSchema);
+
 const MyModel = mongoose.model('MyModel', myModelSchema);
+
+// MyModel.watch()
+//   .on('change', (data) => console.log(new Date(), data));
 
 myModelSchema.plugin(AutoIncrement, { inc_field: 'id' });
 

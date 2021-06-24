@@ -14,21 +14,13 @@ class ModelService {
     }
   }
 
-  public async createModel(modelData: any): Promise<MyModelDoc> {
+  public async saveModel(modelData: any): Promise<MyModelDoc> {
     try {
       const myModel = new MyModel(modelData);
       await myModel.save();
       return myModel;
     } catch (error) {
       throw new HttpException(422, 'Failed to add');
-    }
-  }
-
-  public async updateModel(modelId: string, modelData: any) {
-    try {
-      MyModel.findByIdAndUpdate(modelId, modelData, { new: true, upsert: true });
-    } catch (error) {
-      throw new HttpException(422, 'Failed to update');
     }
   }
 }

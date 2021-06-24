@@ -32,11 +32,10 @@ class JsonPatchService {
     this.patchOperations.forEach(
       async (operation: (AddOperation | ReplaceOperation | RemoveOperation | null)) => {
         this.model = operation?.apply(this.model);
-        console.log(this.model);
       },
     );
 
-    return this.patch;
+    return this.model;
   }
 
   private mapToOperations() {
