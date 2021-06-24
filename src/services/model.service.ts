@@ -37,7 +37,7 @@ class ModelService {
 
     try {
       const myModel = new MyModel(modelData);
-      await myModel.save((err: any, data: any) => {
+      await myModel.update((err: any, data: any) => {
         if (err) {
           throw new HttpException(404, err);
         }

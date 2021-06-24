@@ -35,8 +35,11 @@ describe('[POST] /create-model', () => {
     const res = await request
       .post('/create-model')
       .set('Accept', 'application/json')
-      .send(newModelData)
-      .expect(201);
+      .send(newModelData);
+
+    expect(res.status).toBe(201);
+    expect(res.body.data.entities.length).toBe(3);
+    expect(res.body.data.entities.length).toBe(2);
   });
 });
 
@@ -72,5 +75,7 @@ describe('[POST] /model/:modelId/deltas', () => {
       .send(deltas);
 
     expect(res.status).toBe(200);
+    expect(res.body.data.entities.length).toBe(4);
+    expect(res.body.data.entities[1].attributes[0].name).toBe('not name');
   });
 });
