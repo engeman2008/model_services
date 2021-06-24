@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable import/no-extraneous-dependencies */
 import mongoose from 'mongoose';
 import supertest from 'supertest';
@@ -5,10 +6,9 @@ import supertest from 'supertest';
 import { MyModel } from '../mongoose/schema';
 import { newModelData } from './new-model.json';
 
-console.log(newModelData);
-const express = require('express');
+import app from '../app';
 
-const app = express();
+const request = supertest(app);
 
 beforeAll(async () => {
   const url = 'mongodb://127.0.0.1/test';
@@ -31,9 +31,32 @@ afterAll(async () => {
 });
 
 describe('[POST] /create-model', () => {
-  it('response statusCode 200', async () => supertest(app)
-    .post('/create-model')
-    .send(newModelData)
-    .expect('Content-Type', /json/)
-    .expect(200));
+  it('response statusCode 201', async () => {
+    const res = await request
+      .post('/create-model')
+      .set('Accept', 'application/json')
+      .send(newModelData)
+      .expect(201);
+  });
+});
+
+describe('[GET] /model/:modelId', () => {
+  it('response statusCode 200', async () => {
+    const model = new MyModel(newModelData);
+    await model.save();
+    const res = await request
+      .get(`/model/${model._id}`)
+      .set('Accept', 'application/json');
+
+    expect(res.status).toBe(200);
+  });
+});
+
+describe('[GET] /model/:modelId', () => {
+  it('response statusCode 404 if not found', async () => {
+    const res = await request
+      .get('/model/24245')
+      .set('Accept', 'application/json')
+      .expect(404, { message: 'Model with id 24245 not found' });
+  });
 });
