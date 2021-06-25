@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MyModel = void 0;
 const tslib_1 = require("tslib");
-/* eslint-disable no-unused-vars */
 const mongoose_1 = tslib_1.__importDefault(require("mongoose"));
 const AutoIncrement = require('mongoose-sequence')(mongoose_1.default);
 const attributeSchema = new mongoose_1.default.Schema({

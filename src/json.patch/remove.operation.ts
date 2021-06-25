@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable class-methods-use-this */
 import * as pointer from 'json-pointer';
 import { JsonOperation } from './json.operation';
 import HttpException from '../exceptions/HttpException';

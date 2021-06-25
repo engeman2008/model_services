@@ -1,10 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.removeNulls = exports.isEmpty = exports.deepCopy = void 0;
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-restricted-syntax */
-/* eslint-disable guard-for-in */
-/* eslint-disable no-unused-vars */
+exports.isEmpty = exports.deepCopy = void 0;
 const deepCopy = (target) => {
     if (target === null) {
         return target;
@@ -31,15 +27,3 @@ const deepCopy = (target) => {
 exports.deepCopy = deepCopy;
 const isEmpty = (val) => val == null || !(Object.keys(val) || val).length;
 exports.isEmpty = isEmpty;
-function removeNulls(obj) {
-    if (obj === null) {
-        return undefined;
-    }
-    if (typeof obj === 'object') {
-        for (const key in obj) {
-            obj[key] = removeNulls(obj[key]);
-        }
-    }
-    return obj;
-}
-exports.removeNulls = removeNulls;

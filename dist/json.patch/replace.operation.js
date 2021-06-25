@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReplaceOperation = void 0;
 const tslib_1 = require("tslib");
-/* eslint-disable no-unused-vars */
 const pointer = tslib_1.__importStar(require("json-pointer"));
 const path_value_operation_1 = require("./path.value.operation");
 const HttpException_1 = tslib_1.__importDefault(require("../exceptions/HttpException"));

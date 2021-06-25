@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import express from 'express';
 import { json } from 'body-parser';
 import cors from 'cors';

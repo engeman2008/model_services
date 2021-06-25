@@ -7,7 +7,6 @@ const json_operation_1 = require("./json.operation");
 const remove_operation_1 = require("./remove.operation");
 const replace_operation_1 = require("./replace.operation");
 const validation_1 = require("./validation");
-// eslint-disable-next-line no-unused-vars
 class JsonPatchService {
     constructor(model, patch) {
         this.addOperations = [];
@@ -28,7 +27,6 @@ class JsonPatchService {
         this.removeOperations.forEach((operation) => {
             this.model = operation === null || operation === void 0 ? void 0 : operation.apply(this.model);
         });
-        console.log(this.model);
         this.addOperations.forEach((operation) => {
             this.model = operation === null || operation === void 0 ? void 0 : operation.apply(this.model);
         });

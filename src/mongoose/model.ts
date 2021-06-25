@@ -7,14 +7,3 @@ export interface IModel extends Document {
   entities: IEntity[]
   associations: IAssociation[]
 }
-
-// export interface MyModelDoc extends mongoose.Document {
-//   name: string,
-//   entities: IEntity[]
-//   associations: IAssociation[]
-// }
-
-// export interface myModelInterface extends mongoose.Model<MyModelDoc> {
-//   // eslint-disable-next-line no-unused-vars
-//   build(attr: IModel): MyModelDoc
-// }

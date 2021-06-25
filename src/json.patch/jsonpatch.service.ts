@@ -1,4 +1,3 @@
-/* eslint-disable class-methods-use-this */
 import { IModel } from '../mongoose/model';
 import ModelService from '../services/model.service';
 import { AddOperation } from './add.operation';
@@ -8,7 +7,6 @@ import { RemoveOperation } from './remove.operation';
 import { ReplaceOperation } from './replace.operation';
 import { Validation } from './validation';
 
-// eslint-disable-next-line no-unused-vars
 class JsonPatchService {
   private model: any;
 

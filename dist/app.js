@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const tslib_1 = require("tslib");
-/* eslint-disable no-underscore-dangle */
 const express_1 = tslib_1.__importDefault(require("express"));
 const body_parser_1 = require("body-parser");
 const cors_1 = tslib_1.__importDefault(require("cors"));
