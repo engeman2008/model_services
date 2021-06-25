@@ -3,7 +3,9 @@ import { OperationDto } from './operation.dto';
 declare class JsonPatchService {
     private model;
     private patch;
-    private patchOperations;
+    private addOperations;
+    private removeOperations;
+    private replaceOperations;
     private valdiation;
     private modelService;
     constructor(model: any, patch: OperationDto[]);

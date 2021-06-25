@@ -57,7 +57,7 @@ describe('[GET] /model/:modelId', () => {
 
 describe('[GET] /model/:modelId', () => {
   it('response statusCode 404 if not found', async () => {
-    const res = await request
+    await request
       .get('/model/24245')
       .set('Accept', 'application/json')
       .expect(404, { message: 'Model with id 24245 not found' });
@@ -68,7 +68,6 @@ describe('[POST] /model/:modelId/deltas', () => {
   it('response statusCode 200 if ok', async () => {
     const model = new MyModel(newModelData);
     await model.save();
-    console.log(model._id);
     const res = await request
       .post(`/model/${model._id}/deltas`)
       .set('Accept', 'application/json')

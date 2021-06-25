@@ -4,19 +4,18 @@ const tslib_1 = require("tslib");
 /* eslint-disable no-underscore-dangle */
 const express_1 = tslib_1.__importDefault(require("express"));
 const body_parser_1 = require("body-parser");
-const routes = tslib_1.__importStar(require("./routes/index"));
+const cors_1 = tslib_1.__importDefault(require("cors"));
+const index_1 = tslib_1.__importDefault(require("./routes/index"));
 const error_middleware_1 = tslib_1.__importDefault(require("./middlewares/error.middleware"));
 const app = express_1.default();
 app.use(body_parser_1.json());
+app.use(cors_1.default());
 // create application/json parser
 app.use(express_1.default.urlencoded({
     extended: true,
 }));
 app.use(express_1.default.json());
 // Configure routes
-routes.register(app);
-app.get('/test', (req, res) => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
-    res.json({ message: 'pass!' });
-}));
+app.use('/', index_1.default);
 app.use(error_middleware_1.default);
 exports.default = app;

@@ -9,6 +9,8 @@ class ModelService {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
             try {
                 const myModel = yield schema_1.MyModel.findById(modelId);
+                if (!myModel)
+                    throw new HttpException_1.default(404, `Model with id ${modelId} not found`);
                 return myModel;
             }
             catch (error) {

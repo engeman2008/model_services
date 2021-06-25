@@ -1,13 +1,13 @@
 /* eslint-disable class-methods-use-this */
 import HttpException from '../exceptions/HttpException';
 import { IModel } from '../mongoose/model';
-
 import { MyModel } from '../mongoose/schema';
 
 class ModelService {
   public async findModelById(modelId: string): Promise<any> {
     try {
       const myModel = await MyModel.findById(modelId);
+      if (!myModel) throw new HttpException(404, `Model with id ${modelId} not found`);
       return myModel;
     } catch (error) {
       throw new HttpException(404, `Model with id ${modelId} not found`);
@@ -37,7 +37,7 @@ class ModelService {
 
     try {
       const myModel = new MyModel(modelData);
-      await myModel.update((err: any, data: any) => {
+      await myModel.save((err: any, data: any) => {
         if (err) {
           throw new HttpException(404, err);
         }

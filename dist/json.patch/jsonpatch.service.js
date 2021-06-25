@@ -10,7 +10,9 @@ const validation_1 = require("./validation");
 // eslint-disable-next-line no-unused-vars
 class JsonPatchService {
     constructor(model, patch) {
-        this.patchOperations = [];
+        this.addOperations = [];
+        this.removeOperations = [];
+        this.replaceOperations = [];
         this.valdiation = new validation_1.Validation();
         this.modelService = new model_service_1.default();
         this.model = model;
@@ -19,22 +21,33 @@ class JsonPatchService {
     apply() {
         this.valdiation.validate(this.patch);
         this.mapToOperations();
-        this.patchOperations.forEach((operation) => tslib_1.__awaiter(this, void 0, void 0, function* () {
+        // apply replace then remove then add
+        this.replaceOperations.forEach((operation) => {
             this.model = operation === null || operation === void 0 ? void 0 : operation.apply(this.model);
-        }));
+        });
+        this.removeOperations.forEach((operation) => {
+            this.model = operation === null || operation === void 0 ? void 0 : operation.apply(this.model);
+        });
+        console.log(this.model);
+        this.addOperations.forEach((operation) => {
+            this.model = operation === null || operation === void 0 ? void 0 : operation.apply(this.model);
+        });
         return this.model;
     }
     mapToOperations() {
-        this.patchOperations = this.patch.map((record) => {
+        this.patch.forEach((record) => {
             switch (record.op) {
                 case json_operation_1.OperationEnum.add:
-                    return new add_operation_1.AddOperation(record.path, record.value);
+                    this.addOperations.push(new add_operation_1.AddOperation(record.path, record.value));
+                    break;
                 case json_operation_1.OperationEnum.replace:
-                    return new replace_operation_1.ReplaceOperation(record.path, record.value);
+                    this.replaceOperations.push(new replace_operation_1.ReplaceOperation(record.path, record.value));
+                    break;
                 case json_operation_1.OperationEnum.remove:
-                    return new remove_operation_1.RemoveOperation(record.path);
+                    this.removeOperations.push(new remove_operation_1.RemoveOperation(record.path));
+                    break;
                 default:
-                    return null;
+                    break;
             }
         });
     }

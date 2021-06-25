@@ -1,2 +1,2 @@
-import * as express from 'express';
-export declare const register: (app: express.Application) => void;
+declare const router: import("express-serve-static-core").Router;
+export default router;

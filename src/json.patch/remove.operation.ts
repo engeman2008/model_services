@@ -14,6 +14,11 @@ export class RemoveOperation extends JsonOperation {
     if (!pointer.has(input, this.path)) throw new HttpException(404, `No such path ${this.path}`);
     const document: any[] = pointer.get(input, this.path);
 
+    // if is array the removed path , then put it to []
+    if (Array.isArray(document)) {
+      pointer.set(input, this.path, undefined);
+    }
+
     pointer.remove(input, this.path);
 
     return input;

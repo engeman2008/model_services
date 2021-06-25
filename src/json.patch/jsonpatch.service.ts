@@ -36,17 +36,17 @@ class JsonPatchService {
 
     // apply replace then remove then add
     this.replaceOperations.forEach(
-      async (operation: ReplaceOperation) => {
+      (operation: ReplaceOperation) => {
         this.model = operation?.apply(this.model);
       },
     );
     this.removeOperations.forEach(
-      async (operation: RemoveOperation) => {
+      (operation: RemoveOperation) => {
         this.model = operation?.apply(this.model);
       },
     );
     this.addOperations.forEach(
-      async (operation: AddOperation) => {
+      (operation: AddOperation) => {
         this.model = operation?.apply(this.model);
       },
     );
