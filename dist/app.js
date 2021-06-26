@@ -15,6 +15,6 @@ app.use(express_1.default.urlencoded({
 }));
 app.use(express_1.default.json());
 // Configure routes
-app.use('/', index_1.default);
+app.use('/api/', index_1.default);
 app.use(error_middleware_1.default);
 exports.default = app;

@@ -15,7 +15,7 @@ app.use(express.urlencoded({
 app.use(express.json());
 
 // Configure routes
-app.use('/', routes);
+app.use('/api/', routes);
 
 app.use(errorMiddleware);
 

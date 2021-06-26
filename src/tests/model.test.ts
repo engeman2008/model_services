@@ -30,46 +30,46 @@ afterAll(async () => {
   await mongoose.connection.close();
 });
 
-describe('[POST] /create-model', () => {
+describe('[POST] /api/create-model', () => {
   it('response statusCode 201', async () => {
     const res = await request
-      .post('/create-model')
+      .post('/api/create-model')
       .set('Accept', 'application/json')
       .send(newModelData);
 
     expect(res.status).toBe(201);
     expect(res.body.data.entities.length).toBe(3);
-    expect(res.body.data.entities.length).toBe(2);
+    expect(res.body.data.associations.length).toBe(2);
   });
 });
 
-describe('[GET] /model/:modelId', () => {
+describe('[GET] /api/model/:modelId', () => {
   it('response statusCode 200', async () => {
     const model = new MyModel(newModelData);
     await model.save();
     const res = await request
-      .get(`/model/${model._id}`)
+      .get(`/api/model/${model._id}`)
       .set('Accept', 'application/json');
 
     expect(res.status).toBe(200);
   });
 });
 
-describe('[GET] /model/:modelId', () => {
+describe('[GET] /api/model/:modelId', () => {
   it('response statusCode 404 if not found', async () => {
     await request
-      .get('/model/24245')
+      .get('/api/model/24245')
       .set('Accept', 'application/json')
       .expect(404, { message: 'Model with id 24245 not found' });
   });
 });
 
-describe('[POST] /model/:modelId/deltas', () => {
+describe('[POST] /api/model/:modelId/deltas', () => {
   it('response statusCode 200 if ok', async () => {
     const model = new MyModel(newModelData);
     await model.save();
     const res = await request
-      .post(`/model/${model._id}/deltas`)
+      .post(`/api/model/${model._id}/deltas`)
       .set('Accept', 'application/json')
       .send(deltas);
 
