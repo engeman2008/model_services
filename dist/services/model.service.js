@@ -54,18 +54,6 @@ class ModelService {
             catch (error) {
                 throw new HttpException_1.default(422, 'Failed to update');
             }
-            // try {
-            //   const myModel = new MyModel(modelData);
-            //   await myModel.save((err: any, data: any) => {
-            //     if (err) {
-            //       throw new HttpException(404, err);
-            //     }
-            //     return data;
-            //   });
-            //   return myModel;
-            // } catch (error) {
-            //   throw new HttpException(422, 'Failed to update');
-            // }
         });
     }
 }
