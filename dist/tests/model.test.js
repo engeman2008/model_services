@@ -29,12 +29,12 @@ afterAll(() => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
 describe('[POST] /api/create-model', () => {
     it('response statusCode 201', () => tslib_1.__awaiter(void 0, void 0, void 0, function* () {
         const res = yield request
-            .post('api/create-model')
+            .post('/api/create-model')
             .set('Accept', 'application/json')
             .send(test_data_1.newModelData);
         expect(res.status).toBe(201);
         expect(res.body.data.entities.length).toBe(3);
-        expect(res.body.data.entities.length).toBe(2);
+        expect(res.body.data.associations.length).toBe(2);
     }));
 });
 describe('[GET] /api/model/:modelId', () => {

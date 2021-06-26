@@ -68,6 +68,7 @@ describe('[POST] /api/model/:modelId/deltas', () => {
   it('response statusCode 200 if ok', async () => {
     const model = new MyModel(newModelData);
     await model.save();
+
     const res = await request
       .post(`/api/model/${model._id}/deltas`)
       .set('Accept', 'application/json')

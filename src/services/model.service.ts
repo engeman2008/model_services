@@ -33,17 +33,17 @@ class ModelService {
   }
 
   public async updateModel(modelId: string, modelData: any) {
-    await this.findModelById(modelId);
+    const doc = await this.findModelById(modelId);
 
     try {
-      const myModel = new MyModel(modelData);
-      await myModel.save((err: any, data: any) => {
+      doc.overwrite(modelData);
+      await doc.save((err: any, data: any) => {
         if (err) {
           throw new HttpException(404, err);
         }
         return data;
       });
-      return myModel;
+      return doc;
     } catch (error) {
       throw new HttpException(422, 'Failed to update');
     }

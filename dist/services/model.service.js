@@ -40,20 +40,32 @@ class ModelService {
     }
     updateModel(modelId, modelData) {
         return tslib_1.__awaiter(this, void 0, void 0, function* () {
-            yield this.findModelById(modelId);
+            const doc = yield this.findModelById(modelId);
             try {
-                const myModel = new schema_1.MyModel(modelData);
-                yield myModel.save((err, data) => {
+                doc.overwrite(modelData);
+                yield doc.save((err, data) => {
                     if (err) {
                         throw new HttpException_1.default(404, err);
                     }
                     return data;
                 });
-                return myModel;
+                return doc;
             }
             catch (error) {
                 throw new HttpException_1.default(422, 'Failed to update');
             }
+            // try {
+            //   const myModel = new MyModel(modelData);
+            //   await myModel.save((err: any, data: any) => {
+            //     if (err) {
+            //       throw new HttpException(404, err);
+            //     }
+            //     return data;
+            //   });
+            //   return myModel;
+            // } catch (error) {
+            //   throw new HttpException(422, 'Failed to update');
+            // }
         });
     }
 }

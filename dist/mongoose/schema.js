@@ -14,6 +14,14 @@ const entitySchema = new mongoose_1.default.Schema({
         attributeSchema,
     ],
 });
+entitySchema.pre('save', (next) => {
+    console.log('1');
+    next();
+});
+entitySchema.pre('remove', (next) => {
+    console.log('remove');
+    next();
+});
 const associationSchema = new mongoose_1.default.Schema({
     name: { type: String, required: [true, 'Why no association name?'] },
     source: { type: String, required: [true, 'Why no association source?'] },
